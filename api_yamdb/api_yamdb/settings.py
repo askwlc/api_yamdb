@@ -1,5 +1,6 @@
 from pathlib import Path
 
+AUTH_USER_MODEL = 'reviews.User'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,8 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api_yamdb.apps.ApiConfig',
-    'api_yamdb.apps.ReviewsConfig',
+    'reviews',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -103,3 +104,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
+
+ROLE_CHOICES = (
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin', 'admin')
+)
