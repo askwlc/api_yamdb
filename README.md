@@ -6,7 +6,7 @@
 Команда разработки:
 
 - :white_check_mark: [Nikita Shinkov (в роли Python-разработчика Тимлид - разработчик 2)](https://github.com/#)
-- :white_check_mark: [# (в роли Python-разработчика - разработчик 1)](https://github.com/#)
+- :white_check_mark: [Igor Merkushev (в роли Python-разработчика - разработчик 1)](https://github.com/#)
 - :white_check_mark: [Sergei Tregubov (в роли Python-разработчика - разработчик 3)](https://github.com/SergeiTregubov/)
 
 
