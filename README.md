@@ -5,8 +5,8 @@
 
 Команда разработки:
 
-- :white_check_mark: [# (в роли Python-разработчика Тимлид - разработчик 1)](https://github.com/#)
-- :white_check_mark: [# (в роли Python-разработчика - разработчик 2)](https://github.com/#)
+- :white_check_mark: [# (в роли Python-разработчика Тимлид - разработчик 2)](https://github.com/#)
+- :white_check_mark: [# (в роли Python-разработчика - разработчик 1)](https://github.com/#)
 - :white_check_mark: [SergeiTregubov (в роли Python-разработчика - разработчик 3)](https://github.com/SergeiTregubov/)
 
 
@@ -69,6 +69,6 @@ http://127.0.0.1:8000
 ```
 Проект сделан в рамках учебного процесса по специализации Python-разработчик back-end Яндекс.Практикум.
 
-- :white_check_mark: [# (в роли Python-разработчика Тимлид - разработчик 1)](https://github.com/#)
-- :white_check_mark: [# (в роли Python-разработчика - разработчик 2)](https://github.com/#)
+- :white_check_mark: [# (в роли Python-разработчика Тимлид - разработчик 2)](https://github.com/#)
+- :white_check_mark: [# (в роли Python-разработчика - разработчик 1)](https://github.com/#)
 - :white_check_mark: [SergeiTregubov (в роли Python-разработчика - разработчик 3)](https://github.com/SergeiTregubov/)
