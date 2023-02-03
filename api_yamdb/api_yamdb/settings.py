@@ -108,13 +108,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 
-ROLE_CHOICES = (
-    ('user', 'user'),
-    ('moderator', 'moderator'),
-    ('admin', 'admin')
-)
-
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -127,3 +120,11 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+ROLE_CHOICES = (
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin', 'admin')
+)
+
+MIN_VALUE = 1
