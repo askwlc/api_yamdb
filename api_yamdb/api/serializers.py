@@ -1,7 +1,8 @@
 from rest_framework import serializers
+
 from rest_framework.relations import SlugRelatedField
 
-from .models import Comment, Review
+from api_yamdb.reviews.models import Comment, Review, Title, Category, Genre
 
 
 class ReviewsSerializer(serializers.ModelSerializer):
@@ -43,4 +44,22 @@ class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'text', 'author', 'pub_date')
         model = Comment
-    
+
+
+class TitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Title
+        fields = ('category', 'genre', 'name', 'year')
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('name',)
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('name',)
+

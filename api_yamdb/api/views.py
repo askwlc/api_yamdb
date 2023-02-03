@@ -3,8 +3,23 @@ from rest_framework import viewsets
 
 from api.paginator import CommentPagination
 from api.permissions import AuthorAndStaffOrReadOnly
-from api.serializers import CommentsSerializer, ReviewsSerializer
+from api.serializers import CommentsSerializer, ReviewsSerializer, GenreSerializer, CategorySerializer, TitleSerializer
+from api_yamdb.reviews.models import Genre, Category, Title
 
+
+class TitleViewSet(viewsets.ModelViewSet):
+    queryset = Title.objects.all()
+    serializer_class = TitleSerializer
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewsSerializer
@@ -42,3 +57,4 @@ class CommentViewSet(viewsets.ModelViewSet):
         except TypeError:
             TypeError('У произведения нет такого отзыва')
         serializer.save(author=self.request.user, review=review)
+
