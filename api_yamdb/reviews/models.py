@@ -1,16 +1,16 @@
-from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.db import models
+    
 
 class Review(models.Model):
-    """Модель отзывов и рейтингов"""
+    """Модель отзывы и рейтинг"""
     title = models.ForeignKey(
-        #Title,
+        Title,
         on_delete=models.CASCADE,
         related_name='reviews'
     )
     author = models.ForeignKey(
-        #User,
+        User,
         on_delete=models.CASCADE,
         related_name='reviews'
     )
@@ -45,9 +45,9 @@ class Comment(models.Model):
         related_name='comments'
     )
     author = models.ForeignKey(
-        #User,
+        User,
         on_delete=models.CASCADE,
-        #related_name='comments'
+        related_name='comments'
     )
     pub_date = models.DateTimeField(
         'Дата комментария',
