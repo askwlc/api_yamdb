@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
-from api.paginator import CommentPagination
-from api.permissions import AuthorAndStaffOrReadOnly
-from api.serializers import CommentsSerializer, ReviewsSerializer, GenreSerializer, CategorySerializer, TitleSerializer
+from .paginator import CommentPagination
+from .permissions import AuthorAndStaffOrReadOnly
+from .serializers import CommentsSerializer, ReviewsSerializer, GenreSerializer, CategorySerializer, TitleSerializer
 from api_yamdb.reviews.models import Genre, Category, Title
 
 
