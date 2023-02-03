@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from rest_framework.relations import SlugRelatedField
 
-from api_yamdb.reviews.models import Comment, Review, Title, Category, Genre
+from reviews.models import Comment, Review, Title, Category, Genre
 
 
 class ReviewsSerializer(serializers.ModelSerializer):
@@ -63,3 +63,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name',)
 
+
+class RegistrationSerializer(serializers.Serializer):
+
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+
+
+class GetTokenSerializer(serializers.Serializer):
+
+    username = serializers.CharField(required=True)
+    confirmation_code = serializers.CharField(required=True)
