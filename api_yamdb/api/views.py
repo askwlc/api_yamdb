@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from .paginator import CommentPagination
 from .permissions import AuthorAndStaffOrReadOnly
 from .serializers import CommentsSerializer, ReviewsSerializer, GenreSerializer, CategorySerializer, TitleSerializer
-from api_yamdb.reviews.models import Genre, Category, Title
+from reviews.models import Genre, Category, Title
 
 
 class TitleViewSet(viewsets.ModelViewSet):
