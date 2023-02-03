@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import timedelta
 
 AUTH_USER_MODEL = 'reviews.User'
 
@@ -24,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'reviews',
     'api',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -88,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -110,3 +113,17 @@ ROLE_CHOICES = (
     ('moderator', 'moderator'),
     ('admin', 'admin')
 )
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
