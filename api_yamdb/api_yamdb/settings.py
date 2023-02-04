@@ -1,5 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
+import os
+import socket
 
 AUTH_USER_MODEL = 'reviews.User'
 
@@ -120,6 +122,14 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+ADMIN_EMAIL = 'yambn@gmail.com'
+
+socket.getaddrinfo('yourhostname.com', 80)
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 ROLE_CHOICES = (
     ('user', 'user'),

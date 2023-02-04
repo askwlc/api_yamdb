@@ -74,3 +74,14 @@ class CommentsSerializer(serializers.ModelSerializer):
         model = Comment
 
 
+class RegistrationSerializer(serializers.Serializer):
+
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+
+
+class GetTokenSerializer(serializers.Serializer):
+
+    username = serializers.CharField(required=True)
+    confirmation_code = serializers.CharField(required=True)
+
