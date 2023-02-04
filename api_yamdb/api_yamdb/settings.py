@@ -123,6 +123,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+AUTH_USER_MODEL = 'reviews.User'
+
 ADMIN_EMAIL = 'yambn@gmail.com'
 
 socket.getaddrinfo('yourhostname.com', 80)

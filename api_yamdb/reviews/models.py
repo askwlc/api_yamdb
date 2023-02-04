@@ -4,6 +4,7 @@ import datetime as dt
 from django.db import models
 from django.conf import settings
 
+
 class User(AbstractUser):
     """Переопределение полей стандартной модели User"""
     bio = models.TextField(
