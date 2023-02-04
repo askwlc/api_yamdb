@@ -9,15 +9,16 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 
-from api.paginator import CommentPagination
-from api.permissions import AuthorAndStaffOrReadOnly
-from api.serializers import (CommentsSerializer, ReviewsSerializer, 
+from .paginator import CommentPagination
+from .permissions import AuthorAndStaffOrReadOnly
+from .serializers import (CommentsSerializer, ReviewsSerializer, 
                              GenreSerializer, CategorySerializer,
                              TitleSerializer,
                              RegistrationSerializer, GetTokenSerializer)
 from reviews.models import Genre, Category, Title
 from django.conf import settings
 from reviews.models import User
+
 
 
 class TitleViewSet(viewsets.ModelViewSet):

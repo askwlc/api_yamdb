@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+import datetime as dt
 from django.db import models
 from django.conf import settings
 
@@ -24,8 +25,20 @@ class Title(models.Model):
     )
     genre = models.ManyToManyField('Genre', verbose_name='Жанр')
     name = models.CharField('Название произведения', max_length=256)
-    year = models.PositiveSmallIntegerField('Год выпуска', )
+    year = models.PositiveSmallIntegerField(
+        'Год выпуска',
+        validators=[MinValueValidator(
+            limit_value=settings.MIN_VALUE,
+            message="Год не может быть меньше или равен нулю"),
+            MaxValueValidator(
+                limit_value=dt.date.today().year,
+                message="Год не может быть больше текущего года")])
     description = models.TextField('Описание', blank=True)
+
+    class Meta:
+        verbose_name = 'Произведение'
+        verbose_name_plural = 'Произведения'
+        default_related_name = "titles"
 
     def __str__(self):
         return self.name
@@ -36,6 +49,11 @@ class Category(models.Model):
     name = models.CharField('Имя категории', max_length=256)
     slug = models.SlugField('Slug', max_length=50, unique=True)
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        default_related_name = "categories"
+
     def __str__(self):
         return self.name
 
@@ -44,6 +62,11 @@ class Genre(models.Model):
     """Модель жанров произведений."""
     name = models.CharField('Имя жанра', max_length=256)
     slug = models.SlugField('Slug', max_length=50, unique=True)
+
+    class Meta:
+        verbose_name = 'Жанр'
+        verbose_name_plural = 'Жанры'
+        default_related_name = "genres"
 
     def __str__(self):
         return self.name
