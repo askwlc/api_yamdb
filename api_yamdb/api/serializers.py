@@ -4,6 +4,8 @@ from rest_framework.relations import SlugRelatedField
 
 from reviews.models import Comment, Review, Title, Category, Genre
 
+from django.conf import settings
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,6 +23,7 @@ class GenreSerializer(serializers.ModelSerializer):
 class TitleSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     category = CategorySerializer()
+    rating = serializers.IntegerField(read_only=True)
     class Meta:
         model = Title
         fields = (
@@ -76,12 +79,16 @@ class CommentsSerializer(serializers.ModelSerializer):
 
 class RegistrationSerializer(serializers.Serializer):
 
-    username = serializers.CharField(required=True)
+    username = serializers.CharField(
+        max_length=settings.USERNAME_MAX_LENGTH,
+        required=True)
     email = serializers.EmailField(required=True)
 
 
 class GetTokenSerializer(serializers.Serializer):
 
     username = serializers.CharField(required=True)
-    confirmation_code = serializers.CharField(required=True)
+    confirmation_code = serializers.CharField(
+        max_length=settings.CONFIRMATION_CODE_MAX_LENGTH,
+        required=True)
 
