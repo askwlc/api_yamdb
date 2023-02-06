@@ -16,6 +16,19 @@ class User(AbstractUser):
         choices=settings.ROLE_CHOICES,
         max_length=10, default='USER'
     )
+    email = models.EmailField(
+        unique=True,
+        verbose_name='Адрес электронной почты'
+    )
+
+    confirmation_code = models.CharField(
+        max_length=settings.CONFIRMATION_CODE_MAX_LENGTH,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class Title(models.Model):
