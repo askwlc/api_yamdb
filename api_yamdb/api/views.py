@@ -12,7 +12,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.conf import settings
 
 from .paginator import CommentPagination
-from .permissions import AuthorAndStaffOrReadOnly, IsAdmin
+from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly
 from .serializers import (CommentsSerializer, ReviewsSerializer,
                           GenreSerializer, CategorySerializer,
                           TitleSerializer,
@@ -25,7 +25,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
     filter_backends = (filters.SearchFilter,)
+    filterset_fields = ('username')
     lookup_field = 'username'
+    pagination_class = CommentPagination
 
     @action(
         methods=['patch', 'get'],
@@ -46,16 +48,20 @@ class UserViewSet(viewsets.ModelViewSet):
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     serializer_class = TitleSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    pagination_class = CommentPagination
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    pagination_class = CommentPagination
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = CommentPagination
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

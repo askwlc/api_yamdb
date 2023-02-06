@@ -1,7 +1,6 @@
 from pathlib import Path
 from datetime import timedelta
 import os
-import socket
 
 AUTH_USER_MODEL = 'reviews.User'
 
@@ -29,6 +28,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -123,11 +123,9 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-AUTH_USER_MODEL = 'reviews.User'
 
 ADMIN_EMAIL = 'yambn@gmail.com'
 
-socket.getaddrinfo('yourhostname.com', 80)
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
@@ -136,7 +134,7 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 ROLE_CHOICES = (
     ('user', 'user'),
     ('moderator', 'moderator'),
-    ('admin', 'admin')
+    ('admin', 'admin'),
 )
 
 MIN_VALUE = 1
@@ -144,3 +142,5 @@ MIN_VALUE = 1
 USERNAME_MAX_LENGTH = 150
 EMAIL_MAX_LENGTH = 254
 CONFIRMATION_CODE_MAX_LENGTH = 100
+
+ADMIN_ROLE = 'reviews.User'

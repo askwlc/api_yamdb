@@ -30,6 +30,20 @@ class User(AbstractUser):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
+    @property
+    def is_moderator(self):
+        """True для пользователей с правами модератора."""
+        return self.role == settings.MODERATOR_ROLE
+
+    @property
+    def is_admin(self):
+        """True для пользователей с правами админа и суперпользователей."""
+        return (
+            self.role == settings.ADMIN_ROLE
+            or self.is_staff
+            or self.is_superuser
+        )
+
 
 class Title(models.Model):
     """Модель произведений, к которым пишут отзывы."""

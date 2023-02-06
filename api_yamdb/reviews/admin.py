@@ -36,7 +36,13 @@ class CommentAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'role')
+    search_fields = ('username', 'email', 'role')
+    list_filter = ('role',)
+
+
+admin.site.register(User, UserAdmin)
 admin.site.register(Title, TitleAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Genre, GenreAdmin)
