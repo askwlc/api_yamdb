@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework import serializers
 
 from rest_framework.relations import SlugRelatedField
+from rest_framework.validators import UniqueValidator
 
 from reviews.models import Comment, Review, Title, Category, Genre, User
 
@@ -138,10 +139,26 @@ class CommentsSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.Serializer):
-    username = serializers.CharField(
-        max_length=settings.USERNAME_MAX_LENGTH,
-        required=True)
-    email = serializers.EmailField(required=True)
+    email = serializers.EmailField(
+        max_length=254, required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())])
+    username = serializers.RegexField(
+        regex=r'^[\w.@+-]',
+        max_length=150,
+        validators=[UniqueValidator(queryset=User.objects.all())])
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'username')
+
+    def validate_username(self, username):
+        if username == 'me':
+            raise serializers.ValidationError(
+                "Использовать слово 'me' для username нельзя."
+            )
+        return username
 
 
 class GetTokenSerializer(serializers.Serializer):
