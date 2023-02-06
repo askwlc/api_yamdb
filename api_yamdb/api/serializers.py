@@ -1,6 +1,7 @@
 import datetime as dt
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework import serializers
 
 from rest_framework.relations import SlugRelatedField
@@ -25,8 +26,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_username(self, value):
         if (
-            self.context.get('request').method == 'POST'
-            and User.objects.filter(username=value).exists()
+                self.context.get('request').method == 'POST'
+                and User.objects.filter(username=value).exists()
         ):
             raise ValidationError(
                 'Пользователь с таким именем уже существует.'
@@ -61,12 +62,32 @@ class TitleSerializer(serializers.ModelSerializer):
             'id', 'name', 'year', 'rating',
             'description', 'genre', 'category',
         )
+        read_only_fields = ('id', 'name', 'year', 'rating',
+                            'description', 'genre', 'category',
+                            )
+
+
+class TitlePostSerializer(serializers.ModelSerializer):
+    genre = serializers.SlugRelatedField(
+        slug_field='slug',
+        queryset=Genre.objects.all(),
+        many=True)
+    category = serializers.SlugRelatedField(
+        slug_field='slug',
+        queryset=Category.objects.all()
+    )
+    rating = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Title
+        fields = ('id', 'name', 'year', 'rating',
+                  'description', 'genre', 'category')
 
     def validate_year(self, value):
         current_year = dt.date.today().year
         if value > current_year:
             raise serializers.ValidationError(
-                'Год произведения не может быть больше текущего.'
+                'Год произведения не может быть больше текущего года.'
             )
         return value
 
