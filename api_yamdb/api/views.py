@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.contrib.auth.tokens import default_token_generator
@@ -16,7 +17,8 @@ from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly
 from .serializers import (CommentsSerializer, ReviewsSerializer,
                           GenreSerializer, CategorySerializer,
                           TitleSerializer,
-                          RegistrationSerializer, GetTokenSerializer, UserSerializer, UserEditSerializer)
+                          RegistrationSerializer, GetTokenSerializer, UserSerializer, UserEditSerializer,
+                          TitlePostSerializer)
 from reviews.models import Genre, Category, Title, User
 
 
@@ -46,10 +48,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.annotate(
+        rating=Avg('reviews__score'))
     serializer_class = TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = CommentPagination
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return TitlePostSerializer
+        return TitleSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
