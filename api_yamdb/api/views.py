@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.views import APIView
@@ -12,6 +13,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.conf import settings
 
+from .filters import TitleFilter
 from .paginator import CommentPagination
 from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly
 from .serializers import (CommentsSerializer, ReviewsSerializer,
@@ -53,6 +55,8 @@ class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = CommentPagination
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.request.method in ['POST', 'PUT', 'PATCH']:
@@ -63,7 +67,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    pagination_class = CommentPagination
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
