@@ -2,7 +2,8 @@ import datetime as dt
 
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from rest_framework import serializers
+from requests import Response
+from rest_framework import serializers, request
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueValidator
 
@@ -147,6 +148,7 @@ class RegistrationSerializer(serializers.Serializer):
         fields = (
             'email',
             'username')
+
 
     def validate_username(self, username):
         if username == 'me':

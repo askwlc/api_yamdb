@@ -15,7 +15,7 @@ from django.conf import settings
 
 from .filters import TitleFilter
 from .paginator import CommentPagination
-from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly
+from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly, IsAuthorOrModeRatOrOrAdminOrReadOnly
 from .serializers import (CommentsSerializer, ReviewsSerializer,
                           GenreSerializer, CategorySerializer,
                           TitleSerializer,
@@ -68,6 +68,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 
@@ -75,12 +76,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     pagination_class = CommentPagination
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewsSerializer
     pagination_class = CommentPagination
-    permission_classes = [AuthorAndStaffOrReadOnly]
+    permission_classes = [IsAuthorOrModeRatOrOrAdminOrReadOnly]
 
     def get_queryset(self):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
@@ -95,7 +97,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentsSerializer
     pagination_class = CommentPagination
-    permission_classes = [AuthorAndStaffOrReadOnly]
+    permission_classes = [IsAuthorOrModeRatOrOrAdminOrReadOnly]
 
     def get_queryset(self):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
