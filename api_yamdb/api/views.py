@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status, filters
+from rest_framework import viewsets, status, filters, mixins
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
@@ -55,8 +55,9 @@ class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = CommentPagination
-    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     filterset_class = TitleFilter
+    filterset_fields = ('name',)
+    ordering = ('name',)
 
     def get_serializer_class(self):
         if self.request.method in ['POST', 'PUT', 'PATCH']:

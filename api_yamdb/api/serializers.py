@@ -1,17 +1,14 @@
 import datetime as dt
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.conf import settings
 from rest_framework import serializers
-
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueValidator
 
 from reviews.models import Comment, Review, Title, Category, Genre, User
 
-from django.conf import settings
-
-from reviews.validators import me_user
+from reviews.validators import me_user, validate_year
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -55,7 +52,7 @@ class GenreSerializer(serializers.ModelSerializer):
 class TitleSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     category = CategorySerializer()
-    rating = serializers.IntegerField(required=False)
+    rating = serializers.IntegerField(default=1)
 
     class Meta:
         model = Title
@@ -85,11 +82,6 @@ class TitlePostSerializer(serializers.ModelSerializer):
                   'description', 'genre', 'category')
 
     def validate_year(self, value):
-        current_year = dt.date.today().year
-        if value > current_year:
-            raise serializers.ValidationError(
-                'Год произведения не может быть больше текущего года.'
-            )
         return value
 
     def to_representation(self, instance):
@@ -104,11 +96,6 @@ class ReviewsSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
         read_only=True
     )
-
-    class Meta:
-        fields = '__all__'
-        model = Review
-        read_only_fields = ['title']
 
     def validate(self, data):
         if self.context['request'].method == 'POST':
@@ -127,6 +114,13 @@ class ReviewsSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Проверьте оценку')
         return value
 
+    class Meta:
+        fields = '__all__'
+        model = Review
+        read_only_fields = ['title']
+
+
+
 
 class CommentsSerializer(serializers.ModelSerializer):
     """Комментарии на отзывы"""
@@ -134,8 +128,9 @@ class CommentsSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
-        fields = ('id', 'text', 'author', 'pub_date')
         model = Comment
+        fields = ('id', 'text', 'author', 'pub_date', 'review')
+        read_only_fields = ('review',)
 
 
 class RegistrationSerializer(serializers.Serializer):

@@ -56,7 +56,7 @@ class Title(models.Model):
     year = models.PositiveSmallIntegerField(
         'Год выпуска',
         validators=[MinValueValidator(
-            limit_value=settings.MIN_VALUE,
+            limit_value=1,
             message="Год не может быть меньше или равен нулю"),
             MaxValueValidator(
                 limit_value=dt.date.today().year,
@@ -67,6 +67,7 @@ class Title(models.Model):
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
         default_related_name = "titles"
+
 
     def __str__(self):
         return self.name
