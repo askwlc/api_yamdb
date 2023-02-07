@@ -3,46 +3,41 @@ from django.contrib import admin
 from .models import Comment, Review, User, Genre, Category, Title
 
 
+class GenreTitleInline(admin.TabularInline):
+    model = Title.genre.through
+
+
 class TitleAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'category', 'name', 'year', 'description')
+    list_display = ('category', 'name', 'year', 'description')
     search_fields = ('name',)
-    list_filter = ('category', 'year')
-    empty_value_display = '-пусто-'
+    list_filter = ('id', )
+    inlines = [GenreTitleInline]
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name')
-    search_fields = ('name',)
-    empty_value_display = '-пусто-'
+    list_display = ('name', 'slug', )
+    search_fields = ('name', )
+    list_filter = ('id', )
 
 
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name')
-    search_fields = ('name',)
-    empty_value_display = '-пусто-'
+    list_display = ('name', 'slug', )
+    search_fields = ('name', )
+    list_filter = ('id', )
 
 
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'text', 'score', 'author', 'title')
-    search_fields = ('title', 'author')
-    list_filter = ('score', 'text',)
-    empty_value_display = '-пусто-'
+    list_display = ('pk', 'text', 'score', 'title', 'author', 'pub_date', )
+    search_fields = ('text', 'author', )
+    list_filter = ('pub_date', 'score', 'author', 'title', )
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('review', 'text', 'author', 'pub_date')
-    search_fields = ('review',)
-    list_filter = ('review',)
-    empty_value_display = '-пусто-'
+    list_display = ('pk', 'text', 'review', 'author', 'pub_date', )
+    search_fields = ('text', 'author', )
+    list_filter = ('pub_date', 'author', )
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'role')
-    search_fields = ('username', 'email', 'role')
-    list_filter = ('role',)
-
-
-admin.site.register(User, UserAdmin)
 admin.site.register(Title, TitleAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Genre, GenreAdmin)
