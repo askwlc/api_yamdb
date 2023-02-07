@@ -3,10 +3,22 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime as dt
 from django.db import models
 from django.conf import settings
+from reviews.validators import username_validation
+
+USER = 'user'
+MODERATOR = 'moderator'
+ADMIN = 'admin'
 
 
 class User(AbstractUser):
     """Переопределение полей стандартной модели User"""
+    username = models.CharField(
+        unique=True,
+        max_length=settings.USERNAME_MAX_LENGTH,
+        validators=(username_validation,),
+        verbose_name='Имя пользователя',
+        help_text='Введите имя пользователя'
+    )
     bio = models.TextField(
         'Биография',
         blank=True,
@@ -14,7 +26,7 @@ class User(AbstractUser):
     role = models.CharField(
         'Роль пользователя',
         choices=settings.ROLE_CHOICES,
-        max_length=10, default='USER'
+        max_length=10, default=USER
     )
     email = models.EmailField(
         unique=True,
@@ -33,44 +45,16 @@ class User(AbstractUser):
     @property
     def is_moderator(self):
         """True для пользователей с правами модератора."""
-        return self.role == settings.MODERATOR_ROLE
+        return self.role == MODERATOR
 
     @property
     def is_admin(self):
         """True для пользователей с правами админа и суперпользователей."""
         return (
-            self.role == settings.ADMIN_ROLE
+            self.role == ADMIN
             or self.is_staff
             or self.is_superuser
         )
-
-
-class Title(models.Model):
-    """Модель произведений, к которым пишут отзывы."""
-    category = models.ForeignKey(
-        'Category', verbose_name='Категория',
-        on_delete=models.SET_NULL, null=True
-    )
-    genre = models.ManyToManyField('Genre', verbose_name='Жанр')
-    name = models.CharField('Название произведения', max_length=256)
-    year = models.PositiveSmallIntegerField(
-        'Год выпуска',
-        validators=[MinValueValidator(
-            limit_value=1,
-            message="Год не может быть меньше или равен нулю"),
-            MaxValueValidator(
-                limit_value=dt.date.today().year,
-                message="Год не может быть больше текущего года")])
-    description = models.TextField('Описание', blank=True)
-
-    class Meta:
-        verbose_name = 'Произведение'
-        verbose_name_plural = 'Произведения'
-        default_related_name = "titles"
-
-
-    def __str__(self):
-        return self.name
 
 
 class Category(models.Model):
@@ -98,7 +82,36 @@ class Genre(models.Model):
         default_related_name = "genres"
 
     def __str__(self):
+        return self.slug
+
+
+class Title(models.Model):
+    """Модель произведений, к которым пишут отзывы."""
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL, blank=True, null=True
+    )
+    genre = models.ManyToManyField(Genre, blank=True, db_index=True)
+    name = models.TextField('Название произведения', max_length=256)
+    year = models.PositiveSmallIntegerField(
+        'Год выпуска',
+        validators=[MinValueValidator(
+            limit_value=1,
+            message="Год не может быть меньше или равен нулю"),
+            MaxValueValidator(
+                limit_value=dt.date.today().year,
+                message="Год не может быть больше текущего года")])
+    description = models.TextField(verbose_name='Описание', null=True,
+                                   max_length=200,)
+
+    class Meta:
+        verbose_name = 'Произведение'
+        verbose_name_plural = 'Произведения'
+        default_related_name = "titles"
+
+    def __str__(self):
         return self.name
+
 
 class Review(models.Model):
     """Модель отзывы и рейтинг"""
