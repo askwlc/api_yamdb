@@ -33,6 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
     pagination_class = CommentPagination
     search_fields = ('username',)
+    http_method_names = ['get', 'post', 'head', 'patch', 'delete']
 
     @action(
         methods=['patch', 'get'],
