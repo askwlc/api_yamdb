@@ -30,9 +30,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
     filter_backends = (filters.SearchFilter,)
-    filterset_fields = ('username')
     lookup_field = 'username'
     pagination_class = CommentPagination
+    search_fields = ('username',)
 
     @action(
         methods=['patch', 'get'],
