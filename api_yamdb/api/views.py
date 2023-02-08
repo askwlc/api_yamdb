@@ -141,7 +141,7 @@ class SignUpView(APIView):
             from_email=settings.ADMIN_EMAIL,
             recipient_list=[user.email],
         )
-        return Response(confirmation_code, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class GetTokenView(APIView):
