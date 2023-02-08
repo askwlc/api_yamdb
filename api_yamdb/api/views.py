@@ -30,9 +30,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
     filter_backends = (filters.SearchFilter,)
-    filterset_fields = ('username')
     lookup_field = 'username'
     pagination_class = CommentPagination
+    search_fields = ('username',)
+    http_method_names = ['get', 'post', 'head', 'patch', 'delete']
 
     @action(
         methods=['patch', 'get'],
@@ -141,7 +142,7 @@ class SignUpView(APIView):
             from_email=settings.ADMIN_EMAIL,
             recipient_list=[user.email],
         )
-        return Response(confirmation_code, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class GetTokenView(APIView):
