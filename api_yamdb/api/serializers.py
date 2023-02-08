@@ -9,20 +9,15 @@ from rest_framework.validators import UniqueValidator
 
 from reviews.models import Comment, Review, Title, Category, Genre, User
 
-from reviews.validators import me_user, validate_year, username_validation
+from reviews.validators import username_validation
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         abstract = True
         model = User
         fields = ('username', 'email', 'first_name',
                   'last_name', 'bio', 'role')
-
-    def validate_username(self, value):
-        """Проверяет корректность имени пользователя."""
-        return username_validation(value)
 
 
 class UserEditSerializer(UserSerializer):
@@ -73,9 +68,6 @@ class TitlePostSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'year', 'rating',
                   'description', 'genre', 'category')
 
-    def validate_year(self, value):
-        return value
-
     def to_representation(self, instance):
         """Изменяет response POST запроса, в соответствии с ТЗ"""
         return TitleSerializer(instance).data
@@ -101,17 +93,10 @@ class ReviewsSerializer(serializers.ModelSerializer):
                 )
         return data
 
-    def validate_score(self, value):
-        if 0 >= value >= 10:
-            raise serializers.ValidationError('Проверьте оценку')
-        return value
-
     class Meta:
         fields = '__all__'
         model = Review
         read_only_fields = ['title']
-
-
 
 
 class CommentsSerializer(serializers.ModelSerializer):
@@ -139,14 +124,6 @@ class RegistrationSerializer(serializers.Serializer):
         fields = (
             'email',
             'username')
-
-
-    def validate_username(self, username):
-        if username == 'me':
-            raise serializers.ValidationError(
-                "Использовать слово 'me' для username нельзя."
-            )
-        return username
 
 
 class GetTokenSerializer(serializers.Serializer):

@@ -2,22 +2,9 @@ import datetime as dt
 import re
 
 from django.core import exceptions
+from rest_framework import serializers
 
 from rest_framework.serializers import ValidationError
-
-
-def validate_year(year):
-    now_year = dt.date.today()
-    if year > now_year.year:
-        raise ValueError(f'Некорректный год {year}')
-
-
-def me_user(value):
-    if value == 'me':
-        raise exceptions.ValidationError(
-            'Имя пользователя "me" не разрешено.'
-        )
-    return value
 
 
 def username_validation(value):
@@ -36,3 +23,4 @@ def username_validation(value):
                               'в username. Имя пользователя может содержать '
                               'только буквы, цифры и символы @ . + - _.')
     return value
+
