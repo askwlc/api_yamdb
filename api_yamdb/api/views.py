@@ -15,7 +15,7 @@ from django.conf import settings
 
 from .filters import TitleFilter
 from .paginator import CommentPagination
-from .permissions import AuthorAndStaffOrReadOnly, IsAdmin, IsAdminOrReadOnly, IsAuthorOrModeRatOrOrAdminOrReadOnly
+from .permissions import IsAdmin, IsAdminOrReadOnly, IsAuthorOrModeRatOrOrAdminOrReadOnly
 from .serializers import (CommentsSerializer, ReviewsSerializer,
                           GenreSerializer, CategorySerializer,
                           TitleSerializer,
