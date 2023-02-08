@@ -22,6 +22,7 @@ from .serializers import (CommentsSerializer, ReviewsSerializer,
                           RegistrationSerializer, GetTokenSerializer, UserSerializer, UserEditSerializer,
                           TitlePostSerializer)
 from reviews.models import Genre, Category, Title, User
+from api.mixins import CustomSet
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -65,18 +66,14 @@ class TitleViewSet(viewsets.ModelViewSet):
         return TitleSerializer
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(CustomSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOrReadOnly]
 
 
-
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(CustomSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    pagination_class = CommentPagination
-    permission_classes = [IsAdminOrReadOnly]
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

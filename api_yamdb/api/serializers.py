@@ -9,13 +9,10 @@ from rest_framework.validators import UniqueValidator
 
 from reviews.models import Comment, Review, Title, Category, Genre, User
 
-from reviews.validators import me_user, validate_year
+from reviews.validators import me_user, validate_year, username_validation
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.RegexField(max_length=150,
-                                      regex=r'^[\w.@+-]+\Z',
-                                      required=True)
 
     class Meta:
         abstract = True
@@ -24,14 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
                   'last_name', 'bio', 'role')
 
     def validate_username(self, value):
-        if (
-                self.context.get('request').method == 'POST'
-                and User.objects.filter(username=value).exists()
-        ):
-            raise ValidationError(
-                'Пользователь с таким именем уже существует.'
-            )
-        return me_user(value)
+        """Проверяет корректность имени пользователя."""
+        return username_validation(value)
 
 
 class UserEditSerializer(UserSerializer):
@@ -141,7 +132,7 @@ class RegistrationSerializer(serializers.Serializer):
     username = serializers.RegexField(
         regex=r'^[\w.@+-]',
         max_length=150,
-        validators=[UniqueValidator(queryset=User.objects.all())])
+        validators=[username_validation])
 
     class Meta:
         model = User
