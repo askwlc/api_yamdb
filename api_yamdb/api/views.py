@@ -3,8 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status, filters, mixins
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.serializers import ValidationError
@@ -15,11 +14,19 @@ from django.conf import settings
 
 from .filters import TitleFilter
 from .paginator import CommentPagination
-from .permissions import IsAdmin, IsAdminOrReadOnly, IsAuthorOrModeRatOrOrAdminOrReadOnly
-from .serializers import (CommentsSerializer, ReviewsSerializer,
-                          GenreSerializer, CategorySerializer,
+
+from .permissions import (IsAdmin,
+                          IsAdminOrReadOnly,
+                          IsAuthorOrModeRatOrOrAdminOrReadOnly)
+from .serializers import (CommentsSerializer,
+                          ReviewsSerializer,
+                          GenreSerializer,
+                          CategorySerializer,
                           TitleSerializer,
-                          RegistrationSerializer, GetTokenSerializer, UserSerializer, UserEditSerializer,
+                          RegistrationSerializer,
+                          GetTokenSerializer,
+                          UserSerializer,
+                          UserEditSerializer,
                           TitlePostSerializer)
 from reviews.models import Genre, Category, Title, User
 from api.mixins import CustomSet

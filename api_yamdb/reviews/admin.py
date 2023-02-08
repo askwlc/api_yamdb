@@ -44,4 +44,3 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Review, ReviewsAdmin)
 admin.site.register(Comment, CommentAdmin)
-

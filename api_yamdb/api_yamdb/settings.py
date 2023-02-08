@@ -1,6 +1,5 @@
 from pathlib import Path
 from datetime import timedelta
-import os
 
 AUTH_USER_MODEL = 'reviews.User'
 
@@ -24,11 +23,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reviews.apps.ReviewsConfig',
-    'api.apps.ApiConfig',
+    'reviews',
+    'api',
     'rest_framework',
     'rest_framework_simplejwt',
-    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -110,6 +108,13 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 
+ROLE_CHOICES = (
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin', 'admin')
+)
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -117,35 +122,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5,
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.OrderingFilter',
-    ]
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
-
-ADMIN_EMAIL = 'yambn@gmail.com'
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
-
-ROLE_CHOICES = (
-    ('user', 'user'),
-    ('moderator', 'moderator'),
-    ('admin', 'admin'),
-)
-
-
-USERNAME_MAX_LENGTH = 150
-EMAIL_MAX_LENGTH = 254
-CONFIRMATION_CODE_MAX_LENGTH = 100
-
-ADMIN_ROLE = 'reviews.User'
