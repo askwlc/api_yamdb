@@ -1,17 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
-import datetime as dt
 from django.db import models
 from django.conf import settings
-from reviews.validators import username_validation
 
-USER = 'user'
-MODERATOR = 'moderator'
-ADMIN = 'admin'
+import datetime as dt
+
+from reviews.validators import username_validation
 
 
 class User(AbstractUser):
     """Переопределение полей стандартной модели User"""
+    USER = 'user'
+    MODERATOR = 'moderator'
+    ADMIN = 'admin'
+
     username = models.CharField(
         unique=True,
         max_length=settings.USERNAME_MAX_LENGTH,
@@ -26,7 +28,7 @@ class User(AbstractUser):
     role = models.CharField(
         'Роль пользователя',
         choices=settings.ROLE_CHOICES,
-        max_length=10, default=USER
+        max_length=30, default=USER
     )
     email = models.EmailField(
         unique=True,
@@ -38,23 +40,27 @@ class User(AbstractUser):
         blank=True
     )
 
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-
     @property
     def is_moderator(self):
         """True для пользователей с правами модератора."""
-        return self.role == MODERATOR
+        return self.role == self.MODERATOR
 
     @property
     def is_admin(self):
         """True для пользователей с правами админа и суперпользователей."""
         return (
-            self.role == ADMIN
+            self.role == self.ADMIN
             or self.is_staff
             or self.is_superuser
         )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.username
 
 
 class Category(models.Model):
@@ -65,7 +71,8 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-        default_related_name = "categories"
+        default_related_name = 'categories'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -79,7 +86,8 @@ class Genre(models.Model):
     class Meta:
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
-        default_related_name = "genres"
+        default_related_name = 'genres'
+        ordering = ('name',)
 
     def __str__(self):
         return self.slug
@@ -97,17 +105,18 @@ class Title(models.Model):
         'Год выпуска',
         validators=[MinValueValidator(
             limit_value=1,
-            message="Год не может быть меньше или равен нулю"),
+            message='Год не может быть меньше или равен нулю'),
             MaxValueValidator(
                 limit_value=dt.date.today().year,
-                message="Год не может быть больше текущего года")])
+                message='Год не может быть больше текущего года')])
     description = models.TextField(verbose_name='Описание', null=True,
                                    max_length=200,)
 
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
-        default_related_name = "titles"
+        default_related_name = 'titles'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -131,7 +140,7 @@ class Review(models.Model):
         db_index=True
     )
     text = models.TextField()
-    score = models.IntegerField(
+    score = models.PositiveIntegerField(
         'Оценка',
         default=0,
         validators=[
@@ -144,7 +153,7 @@ class Review(models.Model):
         ordering = ['-pub_date']
         constraints = [
             models.UniqueConstraint(
-                fields=['author', 'title'], name="unique_review")
+                fields=['author', 'title'], name='unique_review')
         ]
 
 
@@ -166,6 +175,12 @@ class Comment(models.Model):
         db_index=True
     )
     text = models.TextField()
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        default_related_name = 'comments'
+        ordering = ['-pub_date']
 
     def __str__(self):
         return self.author
