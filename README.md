@@ -3,7 +3,7 @@
 
 ![Logo](https://cdn-irec.r-99.com/sites/default/files/product-images/399872/EOXOqQkXnjTMTRnIpMUSvQ.jpg)
 
-Команда разработки:
+Команда разработки: 
 
 - :white_check_mark: [Nikita Shinkov (в роли Python-разработчика Тимлид - разработчик 2)](https://github.com/#)
 - :white_check_mark: [Igor Merkushev (в роли Python-разработчика - разработчик 1)](https://github.com/#)
