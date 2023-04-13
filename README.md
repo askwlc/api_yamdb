@@ -1,5 +1,4 @@
-### ЯП - Спринт 10 - Проект YaMDb (групповой проект). Python-разработчик бекенд в Яндекс.Практикум.
-### Описание
+# Проект YaMDb (групповой проект). Python-разработчик бекенд в Яндекс.Практикум.
 
 ![Logo](https://cdn-irec.r-99.com/sites/default/files/product-images/399872/EOXOqQkXnjTMTRnIpMUSvQ.jpg)
 
@@ -9,6 +8,7 @@
 - :white_check_mark: [Igor Merkushev (в роли Python-разработчика - разработчик 1)](https://github.com/#)
 - :white_check_mark: [Sergei Tregubov (в роли Python-разработчика - разработчик 3)](https://github.com/SergeiTregubov/)
 
+### Описание
 
 Проект YaMDb
 
